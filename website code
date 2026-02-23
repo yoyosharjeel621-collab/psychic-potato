@@ -1,0 +1,33 @@
+index.html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Juice Coin</title>
+  <style>
+    body {
+      background-color: #111;
+      color: white;
+      text-align: center;
+      font-family: Arial;
+    }
+    h1 {
+      color: orange;
+      font-size: 50px;
+    }
+    button {
+      background: orange;
+      border: none;
+      padding: 15px 30px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🍹 Juice Coin</h1>
+  <p>The Freshest Meme Coin on the Blockchain 🚀</p>
+  <button>Buy Now</button>
+
+</body>
+</html>
