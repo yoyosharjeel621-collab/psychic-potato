@@ -1,4 +1,3 @@
-index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,112 +9,24 @@ index.html
 <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
 
 <style>
-body{
-  margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(-45deg,#0f0f14,#1c1c2b,#141421,#0f0f14);
-  background-size:400% 400%;
-  animation:gradient 12s ease infinite;
-  color:white;
-}
-@keyframes gradient{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-
-header{
-  display:flex;
-  justify-content:space-between;
-  padding:20px 8%;
-  align-items:center;
-}
-
-.logo{
-  font-size:22px;
-  font-weight:bold;
-  color:#ff7a00;
-}
-
-nav a{
-  margin-left:20px;
-  text-decoration:none;
-  color:white;
-  opacity:0.8;
-}
-
-.hero{
-  text-align:center;
-  padding:120px 20px;
-}
-
-.hero h1{
-  font-size:55px;
-  margin-bottom:20px;
-}
-
-.hero p{
-  font-size:20px;
-  opacity:0.7;
-}
-
-.btn{
-  padding:15px 35px;
-  border-radius:12px;
-  border:none;
-  cursor:pointer;
-  font-size:16px;
-  margin:15px;
-  transition:0.3s;
-}
-
-.primary{
-  background:#ff7a00;
-  color:white;
-}
-
-.primary:hover{
-  transform:scale(1.05);
-}
-
-.secondary{
-  background:transparent;
-  border:1px solid #ff7a00;
-  color:#ff7a00;
-}
-
-.wallet-box{
-  margin-top:30px;
-  font-size:14px;
-  opacity:0.8;
-}
-
-.features{
-  display:flex;
-  justify-content:center;
-  gap:40px;
-  padding:80px 10%;
-  flex-wrap:wrap;
-}
-
-.card{
-  background:rgba(255,255,255,0.05);
-  backdrop-filter:blur(10px);
-  padding:30px;
-  border-radius:20px;
-  width:260px;
-  transition:0.3s;
-}
-
-.card:hover{
-  transform:translateY(-10px);
-}
-
-footer{
-  text-align:center;
-  padding:40px;
-  opacity:0.5;
-}
+body{margin:0;font-family: 'Segoe UI', sans-serif;background: linear-gradient(-45deg,#0f0f14,#1c1c2b,#141421,#0f0f14);background-size:400% 400%;animation:gradient 12s ease infinite;color:white;}
+@keyframes gradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+header{display:flex;justify-content:space-between;padding:20px 8%;align-items:center;}
+.logo{font-size:22px;font-weight:bold;color:#ff7a00;}
+nav a{margin-left:20px;text-decoration:none;color:white;opacity:0.8;}
+.hero{text-align:center;padding:120px 20px;}
+.hero h1{font-size:55px;margin-bottom:20px;}
+.hero p{font-size:20px;opacity:0.7;}
+.btn{padding:15px 35px;border-radius:12px;border:none;cursor:pointer;font-size:16px;margin:15px;transition:0.3s;}
+.primary{background:#ff7a00;color:white;}
+.primary:hover{transform:scale(1.05);}
+.secondary{background:transparent;border:1px solid #ff7a00;color:#ff7a00;}
+.wallet-box{margin-top:30px;font-size:14px;opacity:0.8;}
+.features{display:flex;justify-content:center;gap:40px;padding:80px 10%;flex-wrap:wrap;}
+.card{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);padding:30px;border-radius:20px;width:260px;transition:0.3s;}
+.card:hover{transform:translateY(-10px);}
+footer{text-align:center;padding:40px;opacity:0.5;}
+input, select{padding:8px 10px;border-radius:8px;margin:5px 0;border:none;outline:none;}
 </style>
 </head>
 
@@ -136,56 +47,135 @@ footer{
   <button class="btn primary" onclick="connectEVM()">Connect MetaMask</button>
   <button class="btn secondary" onclick="connectSolana()">Connect Phantom</button>
   <div class="wallet-box" id="walletInfo"></div>
+
+  <div id="dashboard" style="margin-top:25px;display:none;">
+    <p id="network"></p>
+    <p id="ethBalance"></p>
+
+    <h3>Portfolio</h3>
+    <p id="usdtBal"></p>
+    <p id="daiBal"></p>
+    <p id="totalUSD" style="font-weight:bold;font-size:18px;"></p>
+
+    <h3>Swap</h3>
+    <select id="swapFrom"><option>ETH</option><option>USDT</option></select>
+    <select id="swapTo"><option>USDT</option><option>ETH</option></select>
+    <input id="swapAmount" placeholder="Amount"/>
+    <button class="btn primary" onclick="swapTokens()">Swap Now</button>
+    <p id="swapStatus" style="margin-top:10px;"></p>
+  </div>
 </section>
 
 <section class="features">
-  <div class="card">
-    <h3>🔐 Non-Custodial</h3>
-    <p>You control your private keys.</p>
-  </div>
-
-  <div class="card">
-    <h3>🌍 Multi-Chain</h3>
-    <p>Ethereum, BSC, Polygon & Solana support.</p>
-  </div>
-
-  <div class="card">
-    <h3>⚡ Lightning Fast</h3>
-    <p>Optimized Web3 performance.</p>
-  </div>
+  <div class="card"><h3>🔐 Non-Custodial</h3><p>You control your private keys.</p></div>
+  <div class="card"><h3>🌍 Multi-Chain</h3><p>Ethereum, BSC, Polygon & Solana support.</p></div>
+  <div class="card"><h3>⚡ Lightning Fast</h3><p>Optimized Web3 performance.</p></div>
 </section>
 
-<footer>
-© 2026 NexVault — All Rights Reserved
-</footer>
+<footer>© 2026 NexVault — All Rights Reserved</footer>
 
 <script>
+// Globals
+let provider, signer, userAddress;
+
+// EVM Connect
 async function connectEVM(){
-  if(window.ethereum){
-    try{
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-      const address = await signer.getAddress();
-      document.getElementById("walletInfo").innerText =
-        "Connected (EVM): " + address;
-    }catch(err){
-      console.log(err);
-    }
-  }else{
-    alert("MetaMask not detected");
-  }
+  if(!window.ethereum){ alert("Install MetaMask"); return; }
+  provider = new ethers.providers.Web3Provider(window.ethereum);
+  await provider.send("eth_requestAccounts", []);
+  signer = provider.getSigner();
+  userAddress = await signer.getAddress();
+  document.getElementById("walletInfo").innerText = "Connected: " + userAddress;
+
+  const network = await provider.getNetwork();
+  document.getElementById("network").innerText = "Network: " + network.name;
+
+  const balance = await provider.getBalance(userAddress);
+  const eth = ethers.utils.formatEther(balance);
+  document.getElementById("ethBalance").innerText = "ETH Balance: " + parseFloat(eth).toFixed(4);
+
+  await loadTokens(userAddress, eth);
+  document.getElementById("dashboard").style.display="block";
 }
 
+// Token Portfolio + USD value
+async function loadTokens(address, ethBalance){
+  const abi = ["function balanceOf(address) view returns (uint)","function decimals() view returns (uint8)"];
+  const tokens = {
+    USDT: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+    DAI: "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+  };
+  
+  let totalUSD = 0;
+
+  for(const [name,addr] of Object.entries(tokens)){
+    const contract = new ethers.Contract(addr,abi,provider);
+    const bal = await contract.balanceOf(address);
+    const dec = await contract.decimals();
+    const fBal = bal / 10**dec;
+    document.getElementById(name.toLowerCase()+'Bal').innerText = `${name}: ${fBal.toFixed(2)}`;
+
+    // USD price via CoinGecko
+    const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${name.toLowerCase()}&vs_currencies=usd`);
+    const price = (await res.json())[name.toLowerCase()].usd;
+    totalUSD += fBal * price;
+  }
+
+  // ETH price
+  const ethPriceRes = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`);
+  const ethPrice = (await ethPriceRes.json()).ethereum.usd;
+  totalUSD += ethBalance * ethPrice;
+
+  document.getElementById("totalUSD").innerText = "Total Portfolio Value: $" + totalUSD.toFixed(2);
+}
+
+// Swap Function using Uniswap V2 Router
+async function swapTokens(){
+  const amount = document.getElementById("swapAmount").value;
+  const from = document.getElementById("swapFrom").value;
+  const to = document.getElementById("swapTo").value;
+  const status = document.getElementById("swapStatus");
+  if(!amount || amount <= 0){ status.innerText="Enter valid amount"; return; }
+  if(from === to){ status.innerText="Select different tokens"; return; }
+
+  status.innerText = "Swapping...";
+
+  try{
+    const routerAddress = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"; // Uniswap V2
+    const routerAbi = ["function swapExactETHForTokens(uint amountOutMin,address[] calldata path,address to,uint deadline) payable returns (uint[] memory amounts)",
+                       "function swapExactTokensForETH(uint amountIn,uint amountOutMin,address[] calldata path,address to,uint deadline) returns (uint[] memory amounts)",
+                       "function approve(address spender,uint256 amount)"];
+    const router = new ethers.Contract(routerAddress,routerAbi,signer);
+
+    const deadline = Math.floor(Date.now()/1000) + 60*20;
+
+    if(from==="ETH"){
+      const tokenAddress = to==="USDT" ? "0xdAC17F958D2ee523a2206206994597C13D831ec7" : "0x6B175474E89094C44Da98b954EedeAC495271d0F";
+      const path = [ethers.constants.AddressZero, tokenAddress];
+      const tx = await router.swapExactETHForTokens(0, path, userAddress, deadline, {value: ethers.utils.parseEther(amount)});
+      await tx.wait();
+    }else{
+      const tokenAddress = from==="USDT" ? "0xdAC17F958D2ee523a2206206994597C13D831ec7" : "0x6B175474E89094C44Da98b954EedeAC495271d0F";
+      const tokenContract = new ethers.Contract(tokenAddress, ["function approve(address,uint256)"], signer);
+      await tokenContract.approve(routerAddress, ethers.utils.parseUnits(amount,6));
+      const path = [tokenAddress, ethers.constants.AddressZero];
+      const tx = await router.swapExactTokensForETH(ethers.utils.parseUnits(amount,6),0,path,userAddress,deadline);
+      await tx.wait();
+    }
+
+    status.innerText = "Swap Completed!";
+    await connectEVM(); // refresh balances
+  }catch(err){console.error(err); status.innerText="Swap Failed"; }
+}
+
+// Solana Connect
 async function connectSolana(){
   const { solana } = window;
   if(solana && solana.isPhantom){
     const response = await solana.connect();
-    document.getElementById("walletInfo").innerText =
-      "Connected (Solana): " + response.publicKey.toString();
-  }else{
-    alert("Phantom not detected");
-  }
+    document.getElementById("walletInfo").innerText = "Connected (Solana): " + response.publicKey.toString();
+    document.getElementById("dashboard").style.display="block";
+  }else{ alert("Phantom not detected"); }
 }
 </script>
 
