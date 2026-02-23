@@ -1,0 +1,193 @@
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JUICE Wallet</title>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+
+<style>
+body{
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(-45deg,#0f0f14,#1c1c2b,#141421,#0f0f14);
+  background-size:400% 400%;
+  animation:gradient 12s ease infinite;
+  color:white;
+}
+@keyframes gradient{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  padding:20px 8%;
+  align-items:center;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:bold;
+  color:#ff7a00;
+}
+
+nav a{
+  margin-left:20px;
+  text-decoration:none;
+  color:white;
+  opacity:0.8;
+}
+
+.hero{
+  text-align:center;
+  padding:120px 20px;
+}
+
+.hero h1{
+  font-size:55px;
+  margin-bottom:20px;
+}
+
+.hero p{
+  font-size:20px;
+  opacity:0.7;
+}
+
+.btn{
+  padding:15px 35px;
+  border-radius:12px;
+  border:none;
+  cursor:pointer;
+  font-size:16px;
+  margin:15px;
+  transition:0.3s;
+}
+
+.primary{
+  background:#ff7a00;
+  color:white;
+}
+
+.primary:hover{
+  transform:scale(1.05);
+}
+
+.secondary{
+  background:transparent;
+  border:1px solid #ff7a00;
+  color:#ff7a00;
+}
+
+.wallet-box{
+  margin-top:30px;
+  font-size:14px;
+  opacity:0.8;
+}
+
+.features{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  padding:80px 10%;
+  flex-wrap:wrap;
+}
+
+.card{
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(10px);
+  padding:30px;
+  border-radius:20px;
+  width:260px;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-10px);
+}
+
+footer{
+  text-align:center;
+  padding:40px;
+  opacity:0.5;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">JUICE Wallet</div>
+  <nav>
+    <a href="#">Features</a>
+    <a href="#">Developers</a>
+    <a href="#">Support</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>One Wallet. All Chains.</h1>
+  <p>Securely connect to Ethereum, BSC, Polygon & Solana.</p>
+  <button class="btn primary" onclick="connectEVM()">Connect MetaMask</button>
+  <button class="btn secondary" onclick="connectSolana()">Connect Phantom</button>
+  <div class="wallet-box" id="walletInfo"></div>
+</section>
+
+<section class="features">
+  <div class="card">
+    <h3>🔐 Non-Custodial</h3>
+    <p>You control your private keys.</p>
+  </div>
+
+  <div class="card">
+    <h3>🌍 Multi-Chain</h3>
+    <p>Ethereum, BSC, Polygon & Solana support.</p>
+  </div>
+
+  <div class="card">
+    <h3>⚡ Lightning Fast</h3>
+    <p>Optimized Web3 performance.</p>
+  </div>
+</section>
+
+<footer>
+© 2026 JUICE Wallet — All Rights Reserved
+</footer>
+
+<script>
+async function connectEVM(){
+  if(window.ethereum){
+    try{
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const address = await signer.getAddress();
+      document.getElementById("walletInfo").innerText =
+        "Connected (EVM): " + address;
+    }catch(err){
+      console.log(err);
+    }
+  }else{
+    alert("MetaMask not detected");
+  }
+}
+
+async function connectSolana(){
+  const { solana } = window;
+  if(solana && solana.isPhantom){
+    const response = await solana.connect();
+    document.getElementById("walletInfo").innerText =
+      "Connected (Solana): " + response.publicKey.toString();
+  }else{
+    alert("Phantom not detected");
+  }
+}
+</script>
+
+</body>
+</html>
