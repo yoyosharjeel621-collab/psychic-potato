@@ -20,6 +20,7 @@
     <!-- Token balances will appear here -->
   </div>
 </section>
+  
   <!-- Existing Dashboard Section -->
   <section class="dashboard">
     <h2>Your Trade Journal</h2>
@@ -41,6 +42,20 @@
       <!-- User trades will appear here -->
     </div>
   </section>
+
+  <section class="portfolio">
+  <h2>Your Wallet Portfolio</h2>
+
+  <div class="wallet-connect">
+    <button class="btn primary" onclick="connectEVM()">Connect EVM Wallet</button>
+    <button class="btn secondary" onclick="connectSolana()">Connect Solana Wallet</button>
+  </div>
+
+  <div id="walletInfo">Not Connected</div>
+  <div id="portfolioList">
+    <!-- Token balances will appear here -->
+  </div>
+</section>
 
   <!-- Include trades.js at the END of body -->
   <script src="js/trades.js"></script>
