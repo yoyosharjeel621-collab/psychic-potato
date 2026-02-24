@@ -6,7 +6,21 @@
   <title>DexInsight | Trading Journal</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body
+
+  <section class="swap">
+  <h2>Token Swap</h2>
+
+  <div class="swap-box">
+    <input type="text" id="fromToken" placeholder="From (e.g., ETH)">
+    <input type="number" id="fromAmount" placeholder="Amount">
+    <input type="text" id="toToken" placeholder="To (e.g., USDT)">
+    <button class="btn primary" onclick="swapTokens()">Swap</button>
+  </div>
+
+  <div id="swapResult"></div>
+</section>
+  
 <section class="portfolio">
   <h2>Your Wallet Portfolio</h2>
 
