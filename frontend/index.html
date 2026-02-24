@@ -1,1 +1,20 @@
+<section class="dashboard">
+  <h2>Your Trade Journal</h2>
+  
+  <div class="add-trade">
+    <input type="text" id="symbol" placeholder="Symbol (e.g., ETH)">
+    <select id="tradeType">
+      <option value="BUY">BUY</option>
+      <option value="SELL">SELL</option>
+    </select>
+    <input type="number" id="entryPrice" placeholder="Entry Price">
+    <input type="number" id="exitPrice" placeholder="Exit Price">
+    <input type="number" id="amount" placeholder="Amount">
+    <input type="text" id="notes" placeholder="Notes">
+    <button onclick="addTrade()">Add Trade</button>
+  </div>
 
+  <div id="tradeList">
+    <!-- User trades will appear here -->
+  </div>
+</section>
