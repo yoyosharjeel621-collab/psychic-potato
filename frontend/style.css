@@ -1,1 +1,30 @@
+.dashboard {
+  padding: 50px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  margin: 40px;
+  backdrop-filter: blur(10px);
+}
 
+.add-trade input, .add-trade select {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+.add-trade button {
+  background: #ff7a00;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.trade-card {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 12px;
+}
