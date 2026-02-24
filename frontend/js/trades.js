@@ -1,56 +1,29 @@
-const API_URL = "https://your-backend-url.com/api/trades"; // replace with your GitHub backend if hosted
+let trades = [];
 
-// Fetch user trades
-async function fetchTrades(userId) {
-  try {
-    const res = await fetch(`${API_URL}/${userId}`);
-    const trades = await res.json();
-    displayTrades(trades);
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-// Display trades in HTML
-function displayTrades(trades) {
-  const tradeList = document.getElementById("tradeList");
-  tradeList.innerHTML = "";
-  
-  trades.forEach(trade => {
-    const div = document.createElement("div");
-    div.classList.add("trade-card");
-    div.innerHTML = `
-      <strong>${trade.symbol}</strong> - ${trade.tradeType} <br>
-      Entry: ${trade.entryPrice} | Exit: ${trade.exitPrice} <br>
-      Amount: ${trade.amount} | P/L: ${trade.profitLoss.toFixed(2)} <br>
-      Notes: ${trade.notes} <br>
-      Date: ${new Date(trade.date).toLocaleString()}
-    `;
-    tradeList.appendChild(div);
-  });
-}
-
-// Add a new trade
-async function addTrade() {
-  const userId = localStorage.getItem("userId"); // store user id on login
-  const symbol = document.getElementById("symbol").value;
-  const tradeType = document.getElementById("tradeType").value;
-  const entryPrice = parseFloat(document.getElementById("entryPrice").value);
-  const exitPrice = parseFloat(document.getElementById("exitPrice").value);
+function addTrade(){
+  const symbol = document.getElementById("symbol").value.toUpperCase();
+  const type = document.getElementById("tradeType").value;
+  const entry = parseFloat(document.getElementById("entryPrice").value);
+  const exit = parseFloat(document.getElementById("exitPrice").value);
   const amount = parseFloat(document.getElementById("amount").value);
   const notes = document.getElementById("notes").value;
 
-  try {
-    const res = await fetch(`${API_URL}/add`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, symbol, tradeType, entryPrice, exitPrice, amount, notes })
-    });
+  if(!symbol || !entry || !exit || !amount) return alert("Please fill all required fields");
 
-    const data = await res.json();
-    console.log(data.message);
-    fetchTrades(userId); // refresh dashboard
-  } catch (err) {
-    console.error(err);
-  }
+  const trade = { symbol, type, entry, exit, amount, notes, date: new Date().toLocaleString() };
+  trades.push(trade);
+  renderTrades();
+}
+
+function renderTrades(){
+  const list = document.getElementById("tradeList");
+  list.innerHTML = "";
+  trades.forEach((t,i)=>{
+    list.innerHTML += `
+      <div style="border:1px solid #ff7a00; padding:10px; margin:5px; border-radius:8px;">
+        <p>${t.date} | ${t.symbol} | ${t.type} | Entry: ${t.entry} | Exit: ${t.exit} | Amount: ${t.amount}</p>
+        <p>Notes: ${t.notes}</p>
+      </div>
+    `;
+  });
 }
