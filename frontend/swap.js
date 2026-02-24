@@ -1,55 +1,25 @@
-// swap.js
-async function swapTokens() {
-  const fromToken = document.getElementById("fromToken").value.trim().toUpperCase();
-  const toToken = document.getElementById("toToken").value.trim().toUpperCase();
-  const amount = parseFloat(document.getElementById("fromAmount").value);
+async function swapTokens(){
+  const from = document.getElementById("fromToken").value.toUpperCase();
+  const to = document.getElementById("toToken").value.toUpperCase();
+  const amount = parseFloat(document.getElementById("swapAmount").value);
 
-  if(!fromToken || !toToken || !amount) {
-    alert("Please fill all fields");
-    return;
-  }
+  if(!amount || !from || !to) return alert("Fill all fields");
 
-  if(!window.ethereum) return alert("MetaMask not detected");
+  alert(`Fetching swap quote for ${amount} ${from} → ${to}...`);
 
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
-  const address = await signer.getAddress();
+  const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${from.toLowerCase()},${to.toLowerCase()}&vs_currencies=usd`);
+  const data = await res.json();
 
-  // Simple demo swap (Uniswap V2)
-  const uniswapRouterAddress = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"; 
-  const routerAbi = [
-    "function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline) payable returns (uint[] memory amounts)",
-    "function getAmountsOut(uint amountIn, address[] memory path) view returns (uint[] memory amounts)"
-  ];
-  const router = new ethers.Contract(uniswapRouterAddress, routerAbi, signer);
+  const fromUSD = data[from.toLowerCase()]?.usd || 0;
+  const toUSD = data[to.toLowerCase()]?.usd || 0;
+  const estimatedTo = (amount * fromUSD) / toUSD;
 
-  // Demo: assume swap from ETH → USDT
-  const tokenAddresses = {
-    ETH: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-    USDT: "0xdAC17F958D2ee523a2206206994597C13D831ec7"
-  };
+  document.getElementById("swapUI").innerHTML = `
+    <p>Estimated Receive: ${estimatedTo.toFixed(4)} ${to}</p>
+    <button onclick="executeSwap()">Execute Swap</button>
+  `;
+}
 
-  if(!tokenAddresses[fromToken] || !tokenAddresses[toToken]){
-    alert("Token not supported in demo");
-    return;
-  }
-
-  const path = [tokenAddresses[fromToken], tokenAddresses[toToken]];
-  const deadline = Math.floor(Date.now() / 1000) + 60 * 10; // 10 min
-
-  try {
-    const tx = await router.swapExactETHForTokens(
-      0,
-      path,
-      address,
-      deadline,
-      { value: ethers.utils.parseEther(amount.toString()) }
-    );
-    document.getElementById("swapResult").innerText = "Swap TX sent: " + tx.hash;
-    await tx.wait();
-    document.getElementById("swapResult").innerText = "Swap Completed: " + tx.hash;
-  } catch(err) {
-    console.error(err);
-    document.getElementById("swapResult").innerText = "Swap failed: " + err.message;
-  }
+function executeSwap(){
+  alert("Swap executed! (Demo placeholder, real DEX integration coming in Phase 3)");
 }
