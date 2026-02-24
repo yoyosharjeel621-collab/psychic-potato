@@ -1,82 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DexInsight | Trading Journal</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DexInsight | Multi-Chain Web3 Wallet & Trading Dashboard</title>
+
+<!-- Ethers.js & Solana -->
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+
+<style>
+body{
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(-45deg,#0f0f14,#1c1c2b,#141421,#0f0f14);
+  background-size:400% 400%;
+  animation:gradient 12s ease infinite;
+  color:white;
+}
+@keyframes gradient{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  padding:20px 8%;
+  align-items:center;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:bold;
+  color:#ff7a00;
+}
+
+nav a{
+  margin-left:20px;
+  text-decoration:none;
+  color:white;
+  opacity:0.8;
+}
+
+.hero{
+  text-align:center;
+  padding:80px 20px;
+}
+
+.hero h1{
+  font-size:45px;
+  margin-bottom:20px;
+}
+
+.hero p{
+  font-size:18px;
+  opacity:0.7;
+}
+
+.btn{
+  padding:12px 30px;
+  border-radius:12px;
+  border:none;
+  cursor:pointer;
+  font-size:16px;
+  margin:10px;
+  transition:0.3s;
+}
+
+.primary{
+  background:#ff7a00;
+  color:white;
+}
+
+.primary:hover{
+  transform:scale(1.05);
+}
+
+.secondary{
+  background:transparent;
+  border:1px solid #ff7a00;
+  color:#ff7a00;
+}
+
+.wallet-box{
+  margin-top:20px;
+  font-size:14px;
+  opacity:0.8;
+}
+
+.features, .dashboard, .swap{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:20px;
+  padding:40px 10%;
+}
+
+.card{
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(10px);
+  padding:20px;
+  border-radius:20px;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-10px);
+}
+
+footer{
+  text-align:center;
+  padding:30px;
+  opacity:0.5;
+}
+
+input, select{
+  padding:10px;
+  margin:5px;
+  border-radius:8px;
+  border:none;
+  width:150px;
+}
+
+button{
+  cursor:pointer;
+}
+</style>
 </head>
-<body
+<body>
 
-  <section class="swap">
-  <h2>Token Swap</h2>
+<header>
+  <div class="logo">DexInsight</div>
+  <nav>
+    <a href="#">Features</a>
+    <a href="#">Dashboard</a>
+    <a href="#">Swap</a>
+  </nav>
+</header>
 
-  <div class="swap-box">
-    <input type="text" id="fromToken" placeholder="From (e.g., ETH)">
-    <input type="number" id="fromAmount" placeholder="Amount">
-    <input type="text" id="toToken" placeholder="To (e.g., USDT)">
-    <button class="btn primary" onclick="swapTokens()">Swap</button>
-  </div>
-
-  <div id="swapResult"></div>
+<section class="hero">
+  <h1>One Wallet. All Chains.</h1>
+  <p>Securely connect to Ethereum, BSC, Polygon & Solana.</p>
+  <button class="btn primary" onclick="connectEVM()">Connect MetaMask</button>
+  <button class="btn secondary" onclick="connectSolana()">Connect Phantom</button>
+  <div class="wallet-box" id="walletInfo"></div>
 </section>
-  
-<section class="portfolio">
-  <h2>Your Wallet Portfolio</h2>
 
-  <div class="wallet-connect">
-    <button class="btn primary" onclick="connectEVM()">Connect EVM Wallet</button>
-    <button class="btn secondary" onclick="connectSolana()">Connect Solana Wallet</button>
+<section class="features">
+  <div class="card">
+    <h3>🔐 Non-Custodial</h3>
+    <p>You control your private keys.</p>
   </div>
-
-  <div id="walletInfo">Not Connected</div>
-  <div id="portfolioList">
-    <!-- Token balances will appear here -->
+  <div class="card">
+    <h3>🌍 Multi-Chain</h3>
+    <p>Ethereum, BSC, Polygon & Solana support.</p>
   </div>
-</section>
-  
-  <!-- Existing Dashboard Section -->
-  <section class="dashboard">
-    <h2>Your Trade Journal</h2>
-    
-    <div class="add-trade">
-      <input type="text" id="symbol" placeholder="Symbol (e.g., ETH)">
-      <select id="tradeType">
-        <option value="BUY">BUY</option>
-        <option value="SELL">SELL</option>
-      </select>
-      <input type="number" id="entryPrice" placeholder="Entry Price">
-      <input type="number" id="exitPrice" placeholder="Exit Price">
-      <input type="number" id="amount" placeholder="Amount">
-      <input type="text" id="notes" placeholder="Notes">
-      <button onclick="addTrade()">Add Trade</button>
-    </div>
-
-    <div id="tradeList">
-      <!-- User trades will appear here -->
-    </div>
-  </section>
-
-  <section class="portfolio">
-  <h2>Your Wallet Portfolio</h2>
-
-  <div class="wallet-connect">
-    <button class="btn primary" onclick="connectEVM()">Connect EVM Wallet</button>
-    <button class="btn secondary" onclick="connectSolana()">Connect Solana Wallet</button>
-  </div>
-
-  <div id="walletInfo">Not Connected</div>
-  <div id="portfolioList">
-    <!-- Token balances will appear here -->
+  <div class="card">
+    <h3>⚡ Lightning Fast</h3>
+    <p>Optimized Web3 performance.</p>
   </div>
 </section>
 
+<section class="dashboard">
+  <h2>Your Trade Journal</h2>
+  <div class="add-trade">
+    <input type="text" id="symbol" placeholder="Symbol (e.g., ETH)">
+    <select id="tradeType">
+      <option value="BUY">BUY</option>
+      <option value="SELL">SELL</option>
+    </select>
+    <input type="number" id="entryPrice" placeholder="Entry Price">
+    <input type="number" id="exitPrice" placeholder="Exit Price">
+    <input type="number" id="amount" placeholder="Amount">
+    <input type="text" id="notes" placeholder="Notes">
+    <button onclick="addTrade()">Add Trade</button>
+  </div>
+  <div id="tradeList"></div>
+  <h3>Portfolio</h3>
+  <div id="portfolioList">Connect your wallet to see balances...</div>
+</section>
+
+<section class="swap" id="swap">
+  <h2>Swap Tokens</h2>
+  <input type="text" id="fromToken" placeholder="From Token (e.g., ETH)">
+  <input type="text" id="toToken" placeholder="To Token (e.g., USDT)">
+  <input type="number" id="swapAmount" placeholder="Amount">
+  <button onclick="swapTokens()">Get Quote</button>
+  <div id="swapUI"></div>
+</section>
+
+<footer>
+© 2026 DexInsight — All Rights Reserved
+</footer>
+
+<script src="trades.js"></script>
+<script src="portfolio.js"></script>
 <script src="swap.js"></script>
-  
-  <!-- Include trades.js at the END of body -->
-  <script src="js/trades.js"></script>
 
-  <script src="portfolio.js"></script>
+<script>
+async function connectEVM(){
+  if(window.ethereum){
+    try{
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const address = await signer.getAddress();
+      document.getElementById("walletInfo").innerText = "Connected (EVM): " + address;
+      loadPortfolio(address); // load portfolio after connecting
+    }catch(err){ console.log(err); }
+  }else{ alert("MetaMask not detected"); }
+}
+
+async function connectSolana(){
+  const { solana } = window;
+  if(solana && solana.isPhantom){
+    const response = await solana.connect();
+    document.getElementById("walletInfo").innerText = "Connected (Solana): " + response.publicKey.toString();
+    loadPortfolio(response.publicKey.toString());
+  }else{ alert("Phantom not detected"); }
+}
+</script>
 
 </body>
 </html>
